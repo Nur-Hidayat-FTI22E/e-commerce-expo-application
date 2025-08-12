@@ -1,0 +1,547 @@
+import { Feather } from '@expo/vector-icons';
+import React, { useState } from "react";
+import { Image, ImageBackground, Modal, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+const bannerImg = require("../../assets/images/product/banner-fashion.png"); // Ganti dengan gambar banner fashion sale
+const saleProducts = [
+    {
+        id: 1,
+        name: "Evening Dress",
+        brand: "Dorothy Perkins",
+        image: require("../../assets/images/product/sale1.png"),
+        discount: 20,
+        oldPrice: 155,
+        price: 125,
+        rating: 4.5,
+        reviews: 10,
+    },
+    {
+        id: 2,
+        name: "Sport Dress",
+        brand: "Silly",
+        image: require("../../assets/images/product/sale2.png"),
+        discount: 15,
+        oldPrice: 229,
+        price: 195,
+        rating: 4.0,
+        reviews: 5,
+    },
+    {
+        id: 3,
+        name: "Sport Dress",
+        brand: "Silly",
+        image: require("../../assets/images/product/sale3.png"),
+        discount: 15,
+        oldPrice: 229,
+        price: 195,
+        rating: 4.0,
+        reviews: 5,
+    },
+];
+
+const products = [
+    {
+        id: 1,
+        name: "Red Stripe Shirt",
+        image: require("../../assets/images/product/product1.png"),
+        isNew: true,
+    },
+    {
+        id: 2,
+        name: "White T-Shirt",
+        image: require("../../assets/images/product/product2.png"),
+        isNew: true,
+    },
+    {
+        id: 3,
+        name: "Summer Dress",
+        image: require("../../assets/images/product/product3.png"),
+        isNew: false,
+    },
+];
+
+export default function Home() {
+    const [refreshing, setRefreshing] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const onRefresh = () => {
+        setRefreshing(true);
+        setTimeout(() => {
+            setRefreshing(false);
+        }, 1500); // Simulasi loading refresh
+    };
+    return (
+        <>
+        <ScrollView
+            style={styles.container}
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    colors={["#E53935"]}
+                    tintColor="#E53935"
+                    title="Refreshing..."
+                    titleColor="#E53935"
+                />
+            }
+        >
+            {/* Banner Fashion Sale */}
+            <ImageBackground source={bannerImg} style={styles.banner} imageStyle={styles.bannerImg}>
+                <View style={styles.bannerContent}>
+                    <Text style={styles.bannerTitle}>Fashion{"\n"}sale</Text>
+                    <TouchableOpacity style={styles.bannerButton} onPress={() => setModalVisible(true)}>
+                        <Text style={styles.bannerButtonText}>Check</Text>
+                    </TouchableOpacity>
+                </View>
+            </ImageBackground>
+
+            {/* Section Sale */}
+            <View style={styles.sectionHeader}>
+                <View>
+                    <Text style={styles.sectionTitle}>Sale</Text>
+                    <Text style={styles.sectionSubtitle}>Super summer sale</Text>
+                </View>
+                <TouchableOpacity>
+                    <Text style={styles.viewAll}>View all</Text>
+                </TouchableOpacity>
+            </View>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.saleScroll}>
+                {saleProducts.map(product => (
+                    <View key={product.id} style={styles.saleCard}>
+                        <Image source={product.image} style={styles.saleImage} />
+                        <View style={styles.discountBadge}>
+                            <Text style={styles.discountText}>-{product.discount}%</Text>
+                        </View>
+                        <TouchableOpacity style={styles.favoriteBtn}>
+                            <Feather name="heart" size={20} color="#ccc" />
+                        </TouchableOpacity>
+                        <View style={styles.saleInfo}>
+                            <View style={styles.ratingRow}>
+                                {[...Array(5)].map((_, i) => (
+                                    <Feather
+                                        key={i}
+                                        name="star"
+                                        size={14}
+                                        color={i < Math.round(product.rating) ? "#FFC107" : "#eee"}
+                                    />
+                                ))}
+                                <Text style={styles.ratingText}>({product.reviews})</Text>
+                            </View>
+                            <Text style={styles.saleBrand}>{product.brand}</Text>
+                            <Text style={styles.saleName}>{product.name}</Text>
+                            <View style={styles.priceRow}>
+                                <Text style={styles.oldPrice}>{product.oldPrice}$</Text>
+                                <Text style={styles.salePrice}>{product.price}$</Text>
+                            </View>
+                        </View>
+                    </View>
+                ))}
+            </ScrollView>
+
+            {/* Section New */}
+            <View style={styles.sectionHeader}>
+                <View>
+                    <Text style={styles.sectionTitle}>New</Text>
+                    <Text style={styles.sectionSubtitle}>You've never seen it before!</Text>
+                </View>
+                <TouchableOpacity>
+                    <Text style={styles.viewAll}>View all</Text>
+                </TouchableOpacity>
+            </View>
+
+            {/* Produk Baru */}
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.productScroll}>
+                {products.map(product => (
+                    <View key={product.id} style={styles.productCard}>
+                        <Image source={product.image} style={styles.productImage} />
+                        {product.isNew && (
+                            <View style={styles.newBadge}>
+                                <Text style={styles.newBadgeText}>NEW</Text>
+                            </View>
+                        )}
+                        <Text style={styles.productName}>{product.name}</Text>
+                    </View>
+                ))}
+            </ScrollView>
+            {/* ...existing code... */}
+        </ScrollView>
+
+        {/* Modal Promo Grid */}
+        <Modal
+            visible={modalVisible}
+            animationType="slide"
+            transparent={true}
+            onRequestClose={() => setModalVisible(false)}
+        >
+            <View style={styles.modalOverlay}>
+                <View style={styles.modalContent}>
+                    {/* Back Arrow Button */}
+                    <TouchableOpacity style={styles.modalBackBtn} onPress={() => setModalVisible(false)}>
+                        <Feather name="arrow-left" size={28} color="#222" />
+                    </TouchableOpacity>
+                    {/* Promo Grid Section */}
+                    <View style={styles.promoGridCustom}>
+                        <View style={styles.promoGridRow}>
+                            <ImageBackground source={require("../../assets/images/promo-new-collection.png")} style={styles.promoGridLarge} imageStyle={styles.promoGridImg}>
+                                <View style={styles.promoGridOverlayBottomRight}>
+                                    <Text style={styles.promoGridLargeText}>New collection</Text>
+                                </View>
+                            </ImageBackground>
+                        </View>
+                        <View style={styles.promoGridRow}>
+                            <View style={styles.promoGridLeftCol}>
+                                <View style={styles.promoGridSaleBox}>
+                                    <Text style={styles.promoGridSaleText}>Summer sale</Text>
+                                </View>
+                                <ImageBackground source={require("../../assets/images/promo-black.png")} style={styles.promoGridSmall} imageStyle={styles.promoGridImg}>
+                                    <View style={styles.promoGridOverlayBottom}>
+                                        <Text style={styles.promoGridSmallText}>Black</Text>
+                                    </View>
+                                </ImageBackground>
+                            </View>
+                            <ImageBackground source={require("../../assets/images/promo-hoodie.png")} style={styles.promoGridTall} imageStyle={styles.promoGridImg}>
+                                <View style={styles.promoGridOverlayCenter}>
+                                    <Text style={styles.promoGridTallText}>Men's hoodies</Text>
+                                </View>
+                            </ImageBackground>
+                        </View>
+                    </View>
+                </View>
+            </View>
+        </Modal>
+        </>
+    );
+}
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#F7F7F7',
+    },
+    banner: {
+        height: 500,
+        justifyContent: 'flex-end',
+        marginBottom: 16,
+        borderBottomLeftRadius: 24,
+        borderBottomRightRadius: 24,
+        overflow: 'hidden',
+    },
+    bannerImg: {
+        resizeMode: 'cover',
+    },
+    bannerContent: {
+        padding: 24,
+    },
+    bannerTitle: {
+        color: '#fff',
+        fontSize: 36,
+        fontWeight: 'bold',
+        marginBottom: 12,
+        lineHeight: 40,
+    },
+    bannerButton: {
+        backgroundColor: '#E53935',
+        borderRadius: 24,
+        paddingVertical: 10,
+        paddingHorizontal: 32,
+        alignSelf: 'flex-start',
+        elevation: 2,
+        shadowColor: '#E53935',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+    },
+    bannerButtonText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+        letterSpacing: 1,
+    },
+    sectionHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-end',
+        paddingHorizontal: 24,
+        marginBottom: 8,
+    },
+    sectionTitle: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        color: '#222',
+    },
+    sectionSubtitle: {
+        fontSize: 12,
+        color: '#888',
+    },
+    viewAll: {
+        color: '#E53935',
+        fontSize: 14,
+        fontWeight: 'bold',
+    },
+    productScroll: {
+        paddingLeft: 24,
+        marginBottom: 24,
+    },
+    productCard: {
+        width: 120,
+        marginRight: 16,
+        backgroundColor: '#fff',
+        borderRadius: 16,
+        padding: 10,
+        alignItems: 'center',
+        elevation: 2,
+        position: 'relative',
+    },
+    productImage: {
+        width: 80,
+        height: 100,
+        borderRadius: 12,
+        marginBottom: 8,
+        resizeMode: 'cover',
+    },
+    newBadge: {
+        position: 'absolute',
+        top: 10,
+        left: 10,
+        backgroundColor: '#E53935',
+        borderRadius: 8,
+        paddingHorizontal: 6,
+        paddingVertical: 2,
+        zIndex: 2,
+    },
+    newBadgeText: {
+        color: '#fff',
+        fontSize: 10,
+        fontWeight: 'bold',
+    },
+    productName: {
+        fontSize: 14,
+        color: '#222',
+        fontWeight: '500',
+        textAlign: 'center',
+    },
+    saleScroll: {
+        paddingLeft: 24,
+        marginBottom: 24,
+    },
+    saleCard: {
+        width: 160,
+        marginRight: 16,
+        backgroundColor: '#fff',
+        borderRadius: 16,
+        padding: 10,
+        elevation: 2,
+        position: 'relative',
+    },
+    saleImage: {
+        width: 140,
+        height: 160,
+        borderRadius: 12,
+        marginBottom: 8,
+        resizeMode: 'cover',
+    },
+    discountBadge: {
+        position: 'absolute',
+        top: 12,
+        left: 12,
+        backgroundColor: '#E53935',
+        borderRadius: 8,
+        paddingHorizontal: 8,
+        paddingVertical: 2,
+        zIndex: 2,
+    },
+    discountText: {
+        color: '#fff',
+        fontSize: 12,
+        fontWeight: 'bold',
+    },
+    favoriteBtn: {
+        position: 'absolute',
+        top: 12,
+        right: 12,
+        backgroundColor: '#fff',
+        borderRadius: 16,
+        padding: 4,
+        elevation: 2,
+        zIndex: 2,
+    },
+    saleInfo: {
+        marginTop: 4,
+    },
+    ratingRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 2,
+    },
+    ratingText: {
+        fontSize: 10,
+        color: '#888',
+        marginLeft: 4,
+    },
+    saleBrand: {
+        fontSize: 10,
+        color: '#888',
+        marginBottom: 2,
+    },
+    saleName: {
+        fontSize: 14,
+        color: '#222',
+        fontWeight: 'bold',
+        marginBottom: 2,
+    },
+    priceRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 8,
+    },
+    oldPrice: {
+        fontSize: 12,
+        color: '#888',
+        textDecorationLine: 'line-through',
+        marginRight: 4,
+    },
+    salePrice: {
+        fontSize: 14,
+        color: '#E53935',
+        fontWeight: 'bold',
+    },
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        justifyContent: 'flex-start',
+        alignItems: 'stretch',
+    },
+    modalContent: {
+        flex: 1,
+        backgroundColor: '#fff',
+        borderRadius: 0,
+        paddingTop: 0,
+        paddingHorizontal: 0,
+        paddingBottom: 0,
+        width: '100%',
+        maxWidth: '100%',
+        alignSelf: 'stretch',
+        elevation: 0,
+    },
+    modalBackBtn: {
+        position: 'absolute',
+        top: 32,
+        left: 24,
+        zIndex: 10,
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        borderRadius: 24,
+        padding: 6,
+        elevation: 4,
+    },
+    // Custom promo grid styles for edge-to-edge, no gap layout
+    promoGridCustom: {
+        flexDirection: 'column',
+        width: '100%',
+        padding: 0,
+        margin: 0,
+    },
+    promoGridRow: {
+        flexDirection: 'row',
+        width: '100%',
+        margin: 0,
+        padding: 0,
+    },
+    promoGridLarge: {
+        flex: 1,
+        height: 400,
+        borderRadius: 0,
+        overflow: 'hidden',
+        margin: 0,
+        width: '100%',
+    },
+    promoGridLargeText: {
+        color: '#fff',
+        fontSize: 28,
+        fontWeight: 'bold',
+        textAlign: 'right',
+        marginRight: 16,
+        marginBottom: 16,
+        textShadowColor: 'rgba(0,0,0,0.3)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 2,
+    },
+    promoGridOverlayBottomRight: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-end',
+    },
+    promoGridLeftCol: {
+        flex: 1,
+        margin: 0,
+        padding: 0,
+        justifyContent: 'space-between',
+    },
+    promoGridSaleBox: {
+        backgroundColor: '#fff',
+        borderRadius: 0,
+        height: 180,
+        width: 180,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        margin: 0,
+        paddingLeft: 16,
+        elevation: 2,
+        borderBottomWidth: 1,
+        borderColor: '#eee',
+    },
+    promoGridSaleText: {
+        color: '#E53935',
+        fontSize: 24,
+        fontWeight: 'bold',
+    },
+    promoGridSmall: {
+        height: 180,
+        width: 180,
+        borderRadius: 0,
+        overflow: 'hidden',
+        margin: 0,
+    },
+    promoGridSmallText: {
+        color: '#fff',
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginLeft: 16,
+        marginBottom: 12,
+        textShadowColor: 'rgba(0,0,0,0.3)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 2,
+    },
+    promoGridOverlayBottom: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+    },
+    promoGridTall: {
+        width: 180,
+        height: 360,
+        borderRadius: 0,
+        overflow: 'hidden',
+        margin: 0,
+    },
+    promoGridTallText: {
+        color: '#fff',
+        fontSize: 22,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        textShadowColor: 'rgba(0,0,0,0.3)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 2,
+    },
+    promoGridOverlayCenter: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    promoGridImg: {
+        resizeMode: 'cover',
+    },
+    promoGridOverlay: {
+        flex: 1,
+        justifyContent: 'flex-start',
+    },
+});
