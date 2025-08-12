@@ -12,14 +12,14 @@ export default function TabLayout() {
 				tabBarIcon: ({ color, size }) => {
 					let iconName: React.ComponentProps<typeof Feather>['name'] = 'home';
 					if (route.name === 'shop') iconName = 'shopping-cart';
-					if (route.name === 'profile') iconName = 'user';
+					if (route.name === 'bag') iconName = 'shopping-bag';
 					return <Feather name={iconName} size={size} color={color} />;
 				},
 			})}
 		>
 			<Tabs.Screen name="home" options={{ title: 'Home' }} />
-			<Tabs.Screen name="shop" options={{ title: 'shop' }} />
-			<Tabs.Screen name="profile" options={{ title: 'Profile' }} />
+			<Tabs.Screen name="shop" options={{ title: 'Shop' }} />
+			<Tabs.Screen name="bag" options={{ title: 'Bag' }} />
 		</Tabs>
 	);
 }
