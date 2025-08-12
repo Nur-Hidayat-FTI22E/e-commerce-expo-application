@@ -1,11 +1,12 @@
 import { Feather } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React, { useState } from "react";
 import { Image, ImageBackground, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const bannerImg = require("../../assets/images/product/banner-fashion.png"); // Ganti dengan gambar banner fashion sale
 const saleProducts = [
     {
-        id: 1,
+        id: 's1',
         name: "Evening Dress",
         brand: "Dorothy Perkins",
         image: require("../../assets/images/product/sale1.png"),
@@ -16,7 +17,7 @@ const saleProducts = [
         reviews: 10,
     },
     {
-        id: 2,
+        id: 's2',
         name: "Sport Dress",
         brand: "Silly",
         image: require("../../assets/images/product/sale2.png"),
@@ -27,7 +28,7 @@ const saleProducts = [
         reviews: 5,
     },
     {
-        id: 3,
+        id: 's3',
         name: "Sport Dress",
         brand: "Silly",
         image: require("../../assets/images/product/sale3.png"),
@@ -41,19 +42,19 @@ const saleProducts = [
 
 const products = [
     {
-        id: 1,
+        id: 'p1',
         name: "Red Stripe Shirt",
         image: require("../../assets/images/product/product1.png"),
         isNew: true,
     },
     {
-        id: 2,
+        id: 'p2',
         name: "White T-Shirt",
         image: require("../../assets/images/product/product2.png"),
         isNew: true,
     },
     {
-        id: 3,
+        id: 'p3',
         name: "Summer Dress",
         image: require("../../assets/images/product/product3.png"),
         isNew: false,
@@ -68,7 +69,7 @@ export default function Home() {
         setRefreshing(true);
         setTimeout(() => {
             setRefreshing(false);
-        }, 1500); // Simulasi loading refresh
+        }, 1500); 
     };
     return (
         <>
@@ -108,7 +109,7 @@ export default function Home() {
             </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.saleScroll}>
                 {saleProducts.map(product => (
-                    <View key={product.id} style={styles.saleCard}>
+                    <TouchableOpacity key={product.id} style={styles.saleCard} onPress={() => router.push({ pathname: '/product-detail', params: { id: product.id } })}>
                         <Image source={product.image} style={styles.saleImage} />
                         <View style={styles.discountBadge}>
                             <Text style={styles.discountText}>-{product.discount}%</Text>
@@ -135,7 +136,7 @@ export default function Home() {
                                 <Text style={styles.salePrice}>{product.price}$</Text>
                             </View>
                         </View>
-                    </View>
+                    </TouchableOpacity>
                 ))}
             </ScrollView>
 

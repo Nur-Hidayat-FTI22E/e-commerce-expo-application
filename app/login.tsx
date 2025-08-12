@@ -1,12 +1,32 @@
 import { Feather } from '@expo/vector-icons';
-import React, { useState } from "react";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
+import React, { useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { loginUser } from '../services/authService';
 
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const [loading, setLoading] = useState(false);
 	const router = useRouter();
+
+	const handleLogin = async () => {
+		if (!email || !password) {
+			alert('Please enter email and password');
+			return;
+		}
+		setLoading(true);
+		const result = await loginUser({ email, password });
+		setLoading(false);
+		if (result.status === 'OK' && result.data) {
+			await AsyncStorage.setItem('jwt_token', result.data);
+			alert('Login successful');
+			router.push('/home');
+		} else {
+			alert(result.message || 'Login failed');
+		}
+	};
 
 	return (
 		<View style={styles.container}>
@@ -50,8 +70,8 @@ export default function Login() {
 			</TouchableOpacity>
 
 			{/* Login Button */}
-			<TouchableOpacity style={styles.loginButton} onPress={() => router.push('/home')}>
-				<Text style={styles.loginButtonText}>LOGIN</Text>
+			<TouchableOpacity style={styles.loginButton} onPress={handleLogin} disabled={loading}>
+				{loading ? <Text style={styles.loginButtonText}>Loading...</Text> : <Text style={styles.loginButtonText}>LOGIN</Text>}
 			</TouchableOpacity>
 
 			{/* Social Login */}

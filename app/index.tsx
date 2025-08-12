@@ -1,15 +1,33 @@
 import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from "react";
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { createUser } from '../services/authService';
 
 export default function Index() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     const isNameValid = name.length > 0;
+
+    const handleSignUp = async () => {
+        if (!name || !email || !password) {
+            Alert.alert('Error', 'Please fill all fields');
+            return;
+        }
+        setLoading(true);
+        const result = await createUser({ nama: name, email, password });
+        setLoading(false);
+        if (result.status === 'OK') {
+            Alert.alert('Success', 'Account created successfully');
+            router.push('/login');
+        } else {
+            Alert.alert('Error', result.message || 'Failed to create account');
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -59,10 +77,10 @@ export default function Index() {
                 <Feather name="arrow-right" size={16} color="#E53935" style={styles.loginArrow} />
             </TouchableOpacity>
 
-                    {/* Sign Up Button */}
-                    <TouchableOpacity style={styles.signupButton} onPress={() => router.push('/login')}>
-                        <Text style={styles.signupButtonText}>SIGN UP</Text>
-                    </TouchableOpacity>
+            {/* Sign Up Button */}
+            <TouchableOpacity style={styles.signupButton} onPress={handleSignUp} disabled={loading}>
+                {loading ? <ActivityIndicator color="#fff" /> : <Text style={styles.signupButtonText}>SIGN UP</Text>}
+            </TouchableOpacity>
 
             {/* Social Login */}
             <Text style={styles.socialText}>Or sign up with social account</Text>
@@ -190,6 +208,6 @@ const styles = StyleSheet.create({
     socialIcon: {
         width: 32,
         height: 32,
-        resizeMode: 'contain',
+        resizeMode: 'cover',
     },
 });
