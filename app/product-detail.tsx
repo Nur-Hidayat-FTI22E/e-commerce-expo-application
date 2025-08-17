@@ -4,23 +4,28 @@ import React, { useState } from 'react';
 import { Dimensions, FlatList, Image, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-const { width } = Dimensions.get('window');
+type ImageItem = {
+  url: string;
+};
+
+const { width, height } = Dimensions.get('window');
+
 const productData = [
   {
     id: 's1',
-    name: "Evening Dress",
+    name: 'Evening Dress',
     images: [
-      require("../assets/images/product/sale1.png"),
-      require("../assets/images/product/sale1.png"),
-      require("../assets/images/product/sale1.png"),
+      require('../assets/images/product/sale1.png'),
+      require('../assets/images/product/sale1.png'),
+      require('../assets/images/product/sale1.png'),
     ],
-    brand: "Dorothy Perkins",
+    brand: 'Dorothy Perkins',
     price: 125,
     oldPrice: 155,
     discount: 20,
-    colorOptions: ["Black"],
-    sizeOptions: ["XS", "S", "M", "L", "XL"],
-    description: "Elegant evening dress, perfect for formal events.",
+    colorOptions: ['Black', 'Navy', 'Red'], // Tambahkan opsi warna untuk pengujian
+    sizeOptions: ['XS', 'S', 'M', 'L', 'XL'],
+    description: 'Elegant evening dress, perfect for formal events.',
     rating: 4.5,
     ratingCount: 10,
     reviews: [
@@ -36,7 +41,7 @@ const productData = [
         user: 'Kate Doe',
         date: 'June 2, 2019',
         rating: 4,
-        text: "Nice dress, but a bit tight on the waist.",
+        text: 'Nice dress, but a bit tight on the waist.',
         helpful: false,
         withPhoto: false,
       },
@@ -45,19 +50,19 @@ const productData = [
   },
   {
     id: 's2',
-    name: "Sport Dress",
+    name: 'Sport Dress',
     images: [
-      require("../assets/images/product/sale2.png"),
-      require("../assets/images/product/sale2.png"),
-      require("../assets/images/product/sale2.png"),
+      require('../assets/images/product/sale2.png'),
+      require('../assets/images/product/sale2.png'),
+      require('../assets/images/product/sale2.png'),
     ],
-    brand: "Silly",
+    brand: 'Silly',
     price: 195,
     oldPrice: 229,
     discount: 15,
-    colorOptions: ["Blue"],
-    sizeOptions: ["XS", "S", "M", "L", "XL"],
-    description: "Comfortable sport dress for casual wear or workouts.",
+    colorOptions: ['Blue', 'Green', 'White'],
+    sizeOptions: ['XS', 'S', 'M', 'L', 'XL'],
+    description: 'Comfortable sport dress for casual wear or workouts.',
     rating: 4.0,
     ratingCount: 5,
     reviews: [
@@ -82,19 +87,19 @@ const productData = [
   },
   {
     id: 's3',
-    name: "Sport Dress",
+    name: 'Sport Dress',
     images: [
-      require("../assets/images/product/sale3.png"),
-      require("../assets/images/product/sale3.png"),
-      require("../assets/images/product/sale3.png"),
+      require('../assets/images/product/sale3.png'),
+      require('../assets/images/product/sale3.png'),
+      require('../assets/images/product/sale3.png'),
     ],
-    brand: "Silly",
+    brand: 'Silly',
     price: 195,
     oldPrice: 229,
     discount: 15,
-    colorOptions: ["Pink"],
-    sizeOptions: ["XS", "S", "M", "L", "XL"],
-    description: "Comfortable sport dress for casual wear or workouts.",
+    colorOptions: ['Pink', 'Black', 'Gray'],
+    sizeOptions: ['XS', 'S', 'M', 'L', 'XL'],
+    description: 'Comfortable sport dress for casual wear or workouts.',
     rating: 4.0,
     ratingCount: 5,
     reviews: [
@@ -119,17 +124,17 @@ const productData = [
   },
   {
     id: 'p1',
-    name: "Red Stripe Shirt",
+    name: 'Red Stripe Shirt',
     images: [
-      require("../assets/images/product/product1.png"),
-      require("../assets/images/product/product1.png"),
-      require("../assets/images/product/product1.png"),
+      require('../assets/images/product/product1.png'),
+      require('../assets/images/product/product1.png'),
+      require('../assets/images/product/product1.png'),
     ],
-    brand: "Unknown",
+    brand: 'Unknown',
     price: 29.99,
-    colorOptions: ["Red"],
-    sizeOptions: ["XS", "S", "M", "L", "XL"],
-    description: "Casual red stripe shirt, perfect for everyday wear.",
+    colorOptions: ['Red', 'Blue', 'White'],
+    sizeOptions: ['XS', 'S', 'M', 'L', 'XL'],
+    description: 'Casual red stripe shirt, perfect for everyday wear.',
     rating: 4.2,
     ratingCount: 8,
     reviews: [
@@ -154,17 +159,17 @@ const productData = [
   },
   {
     id: 'p2',
-    name: "White T-Shirt",
+    name: 'White T-Shirt',
     images: [
-      require("../assets/images/product/product2.png"),
-      require("../assets/images/product/product2.png"),
-      require("../assets/images/product/product2.png"),
+      require('../assets/images/product/product2.png'),
+      require('../assets/images/product/product2.png'),
+      require('../assets/images/product/product2.png'),
     ],
-    brand: "Unknown",
+    brand: 'Unknown',
     price: 19.99,
-    colorOptions: ["White"],
-    sizeOptions: ["XS", "S", "M", "L", "XL"],
-    description: "Classic white T-shirt, comfortable and versatile.",
+    colorOptions: ['White', 'Black', 'Gray'],
+    sizeOptions: ['XS', 'S', 'M', 'L', 'XL'],
+    description: 'Classic white T-shirt, comfortable and versatile.',
     rating: 4.5,
     ratingCount: 15,
     reviews: [
@@ -189,17 +194,17 @@ const productData = [
   },
   {
     id: 'p3',
-    name: "Summer Dress",
+    name: 'Summer Dress',
     images: [
-      require("../assets/images/product/product3.png"),
-      require("../assets/images/product/product3.png"),
-      require("../assets/images/product/product3.png"),
+      require('../assets/images/product/product3.png'),
+      require('../assets/images/product/product3.png'),
+      require('../assets/images/product/product3.png'),
     ],
-    brand: "Unknown",
+    brand: 'Unknown',
     price: 39.99,
-    colorOptions: ["Yellow"],
-    sizeOptions: ["XS", "S", "M", "L", "XL"],
-    description: "Lightweight summer dress for hot weather.",
+    colorOptions: ['Yellow', 'Green', 'Blue'],
+    sizeOptions: ['XS', 'S', 'M', 'L', 'XL'],
+    description: 'Lightweight summer dress for hot weather.',
     rating: 4.7,
     ratingCount: 12,
     reviews: [
@@ -230,10 +235,14 @@ export default function ProductDetail() {
   const productId = params.id;
   const product = productData.find(p => p.id === productId);
   const [selectedSize, setSelectedSize] = useState('Size');
-  const [selectedColor, setSelectedColor] = useState(product?.colorOptions[0] || 'Black');
+  const [selectedColor, setSelectedColor] = useState('');
   const [sizeModal, setSizeModal] = useState(false);
+  const [colorModal, setColorModal] = useState(false);
   const [visible, setVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Cek apakah ukuran dan warna sudah dipilih
+  const isAddToCartEnabled = selectedSize !== 'Size' && selectedColor !== '';
 
   if (!product) {
     return (
@@ -247,89 +256,159 @@ export default function ProductDetail() {
     );
   }
 
-  const openImage = (index: React.SetStateAction<number>) => {
+  const openImage = (index: number) => {
     setCurrentIndex(index);
     setVisible(true);
   };
 
+  const imageViewerImages: ImageItem[] = product.images.map(img => ({
+    url: Image.resolveAssetSource(img).uri, // Gunakan 'url' sesuai kebutuhan ImageViewer
+  }));
+
   return (
-    <ScrollView style={styles.page} showsVerticalScrollIndicator={false}>
-      {/* Header */}
-      <View style={styles.headerRow}>
-        <TouchableOpacity onPress={() => router.back()} style={styles.headerBtn}>
-          <Feather name="arrow-left" size={24} color="#222" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>{product.name}</Text>
-        <TouchableOpacity style={styles.headerBtn}>
-          <Feather name="share-2" size={22} color="#222" />
-        </TouchableOpacity>
-      </View>
-
-      {/* Image Gallery */}
-      <View>
-      <FlatList
-        data={product.images}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(_: any, index: { toString: () => any; }) => index.toString()}
-        renderItem={({ item, index }: { item: any; index: number }) => (
-          <View style={{
-            width,
-            height: 300,
-            overflow: 'hidden',
-            alignItems: 'flex-start',
-            borderRadius: 12,
-            marginRight: 12,
-            backgroundColor: '#fff',
-          }}>
-            <TouchableOpacity activeOpacity={1} onPress={() => openImage(index)}>
-              <Image
-                source={item}
-                style={ styles.galleryImage }
-              />
-            </TouchableOpacity>
-          </View>
-        )}
-      />
-
-      {/* Modal Zoom */}
-      <ImageViewer
-        images={product.images.map(img => ({ uri: Image.resolveAssetSource(img).uri }))}
-        imageIndex={currentIndex}
-        visible={visible}
-        onRequestClose={() => setVisible(false)}
-      />
-    </View>
-
-      {/* Dropdowns */}
-      <View style={styles.dropdownRow}>
-        <TouchableOpacity style={styles.dropdown} onPress={() => setSizeModal(true)}>
-          <Text style={styles.dropdownText}>{selectedSize}</Text>
-          <Feather name="chevron-down" size={18} color="#222" />
-        </TouchableOpacity>
-        <View style={styles.dropdown}>
-          <Text style={styles.dropdownText}>{selectedColor}</Text>
-          <Feather name="chevron-down" size={18} color="#222" />
+    <View style={styles.container}>
+      <ScrollView style={styles.page} showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
+        {/* Header */}
+        <View style={styles.headerRow}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.headerBtn}>
+            <Feather name="arrow-left" size={24} color="#222" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>{product.name}</Text>
+          <TouchableOpacity style={styles.headerBtn}>
+            <Feather name="share-2" size={22} color="#222" />
+          </TouchableOpacity>
         </View>
-      </View>
 
-      {/* Product Info */}
-      <View style={styles.infoRow}>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.brand}>{product.brand}</Text>
-          <Text style={styles.subBrand}>Short black dress</Text>
-          <View style={styles.ratingRow}>
-            <Feather name="star" size={14} color="#FFC107" />
-            <Text style={styles.ratingText}>({product.ratingCount})</Text>
-          </View>
+        {/* Image Gallery */}
+        <View>
+          <FlatList
+            data={product.images}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            keyExtractor={(_: any, index: { toString: () => any; }) => index.toString()}
+            renderItem={({ item, index }: { item: any; index: number }) => (
+              <View style={{
+                width,
+                height: 450,
+                overflow: 'hidden',
+                alignItems: 'flex-start',
+                borderRadius: 12,
+                marginRight: 12,
+                backgroundColor: '#fff',
+              }}>
+                <TouchableOpacity activeOpacity={1} onPress={() => openImage(index)}>
+                  <Image
+                    source={item}
+                    style={styles.galleryImage}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+          />
         </View>
-        <Text style={styles.price}>${product.price}</Text>
-      </View>
-      <Text style={styles.description}>{product.description}</Text>
 
-      {/* Add to Cart Button */}
-      <TouchableOpacity style={styles.cartBtn}>
+        {/* Image Viewer Modal */}
+        <Modal
+          visible={visible}
+          transparent={true}
+          onRequestClose={() => setVisible(false)}
+        >
+          <View style={styles.imageViewerContainer}>
+            <ImageViewer
+              imageUrls={imageViewerImages}
+              index={currentIndex}
+              onSwipeDown={() => setVisible(false)}
+              enableSwipeDown
+              backgroundColor="rgba(0,0,0,0.9)"
+              renderHeader={() => (
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={() => setVisible(false)}
+                >
+                  <Feather name="x" size={30} color="#fff" />
+                </TouchableOpacity>
+              )}
+            />
+          </View>
+        </Modal>
+
+        {/* Dropdowns */}
+        <View style={styles.dropdownRow}>
+          <TouchableOpacity style={styles.dropdown} onPress={() => setSizeModal(true)}>
+            <Text style={styles.dropdownText}>{selectedSize}</Text>
+            <Feather name="chevron-down" size={18} color="#222" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dropdown} onPress={() => setColorModal(true)}>
+            <Text style={styles.dropdownText}>{selectedColor || 'Color'}</Text>
+            <Feather name="chevron-down" size={18} color="#222" />
+          </TouchableOpacity>
+        </View>
+
+        {/* Product Info */}
+        <View style={styles.infoRow}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.brand}>{product.brand}</Text>
+            <Text style={styles.subBrand}>Short black dress</Text>
+            <View style={styles.ratingRow}>
+              <Feather name="star" size={14} color="#FFC107" />
+              <Text style={styles.ratingText}>({product.ratingCount})</Text>
+            </View>
+          </View>
+          <Text style={styles.price}>${product.price}</Text>
+        </View>
+        <Text style={styles.description}>{product.description}</Text>
+
+        {/* Rating & Reviews Section */}
+        <View style={styles.reviewSection}>
+          <Text style={styles.reviewTitle}>Rating&Reviews</Text>
+          <View style={styles.ratingSummaryRow}>
+            <Text style={styles.ratingScore}>{product.rating}</Text>
+            <View style={styles.ratingStarsCol}>
+              {product.ratingBreakdown.map((count, i) => (
+                <View key={i} style={styles.ratingBarRow}>
+                  <Feather name="star" size={14} color="#FFC107" />
+                  <View style={styles.ratingBarBg}>
+                    <View style={[styles.ratingBarFill, { width: count * 8 }]} />
+                  </View>
+                  <Text style={styles.ratingBarCount}>{count}</Text>
+                </View>
+              ))}
+            </View>
+            <Text style={styles.ratingCount}>{product.ratingCount} ratings</Text>
+          </View>
+          <Text style={styles.reviewCount}>{product.reviews.length} reviews</Text>
+          <View style={styles.reviewList}>
+            {product.reviews.map((r, idx) => (
+              <View key={idx} style={styles.reviewCard}>
+                <View style={styles.reviewHeader}>
+                  <View style={styles.reviewAvatar} />
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.reviewUser}>{r.user}</Text>
+                    <Text style={styles.reviewDate}>{r.date}</Text>
+                  </View>
+                  <Feather name="star" size={14} color="#FFC107" />
+                  <Text style={styles.reviewRating}>{r.rating}</Text>
+                </View>
+                <Text style={styles.reviewText}>{r.text}</Text>
+                <View style={styles.reviewFooter}>
+                  {r.withPhoto && <Text style={styles.reviewPhoto}>With photo</Text>}
+                  {r.helpful && <Text style={styles.reviewHelpful}>Helpful</Text>}
+                </View>
+              </View>
+            ))}
+          </View>
+          <TouchableOpacity style={styles.writeReviewBtn}>
+            <Text style={styles.writeReviewText}>Write a review</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+
+      {/* Fixed Add to Cart Button */}
+      <TouchableOpacity
+        style={[styles.fixedCartBtn, { backgroundColor: isAddToCartEnabled ? '#E53935' : '#ccc' }]}
+        disabled={!isAddToCartEnabled}
+      >
         <Text style={styles.cartText}>ADD TO CART</Text>
       </TouchableOpacity>
 
@@ -343,71 +422,57 @@ export default function ProductDetail() {
                 <TouchableOpacity
                   key={size}
                   style={[styles.sizeBtn, selectedSize === size && styles.sizeBtnActive]}
-                  onPress={() => { setSelectedSize(size); setSizeModal(false); }}
+                  onPress={() => { setSelectedSize(size) }}
                 >
                   <Text style={[styles.sizeText, selectedSize === size && styles.sizeTextActive]}>{size}</Text>
                 </TouchableOpacity>
               ))}
             </View>
             <Text style={styles.sizeInfo}>Size info</Text>
-            <TouchableOpacity style={styles.cartBtn} onPress={() => setSizeModal(false)}>
-              <Text style={styles.cartText}>ADD TO CART</Text>
+            <TouchableOpacity style={styles.confirmBtn} onPress={() => setSizeModal(false)}>
+              <Text style={styles.confirmText}>Confirm</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
-      {/* Rating & Reviews Section */}
-      <View style={styles.reviewSection}>
-        <Text style={styles.reviewTitle}>Rating&Reviews</Text>
-        <View style={styles.ratingSummaryRow}>
-          <Text style={styles.ratingScore}>{product.rating}</Text>
-          <View style={styles.ratingStarsCol}>
-            {product.ratingBreakdown.map((count, i) => (
-              <View key={i} style={styles.ratingBarRow}>
-                <Feather name="star" size={14} color="#FFC107" />
-                <View style={styles.ratingBarBg}>
-                  <View style={[styles.ratingBarFill, { width: count * 8 }]} />
-                </View>
-                <Text style={styles.ratingBarCount}>{count}</Text>
-              </View>
-            ))}
-          </View>
-          <Text style={styles.ratingCount}>{product.ratingCount} ratings</Text>
-        </View>
-        <Text style={styles.reviewCount}>{product.reviews.length} reviews</Text>
-        <View style={styles.reviewList}>
-          {product.reviews.map((r, idx) => (
-            <View key={idx} style={styles.reviewCard}>
-              <View style={styles.reviewHeader}>
-                <View style={styles.reviewAvatar} />
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.reviewUser}>{r.user}</Text>
-                  <Text style={styles.reviewDate}>{r.date}</Text>
-                </View>
-                <Feather name="star" size={14} color="#FFC107" />
-                <Text style={styles.reviewRating}>{r.rating}</Text>
-              </View>
-              <Text style={styles.reviewText}>{r.text}</Text>
-              <View style={styles.reviewFooter}>
-                {r.withPhoto && <Text style={styles.reviewPhoto}>With photo</Text>}
-                {r.helpful && <Text style={styles.reviewHelpful}>Helpful</Text>}
-              </View>
+      {/* Color Modal */}
+      <Modal visible={colorModal} animationType="slide" transparent onRequestClose={() => setColorModal(false)}>
+        <View style={styles.sizeModalOverlay}>
+          <View style={styles.sizeModalContent}>
+            <Text style={styles.sizeModalTitle}>Select color</Text>
+            <View style={styles.sizeGrid}>
+              {product.colorOptions.map(color => (
+                <TouchableOpacity
+                  key={color}
+                  style={[styles.sizeBtn, selectedColor === color && styles.sizeBtnActive]}
+                  onPress={() => { setSelectedColor(color) }}
+                >
+                  <Text style={[styles.sizeText, selectedColor === color && styles.sizeTextActive]}>{color}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
-          ))}
+            <TouchableOpacity style={styles.confirmBtn} onPress={() => setColorModal(false)}>
+              <Text style={styles.confirmText}>Confirm</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <TouchableOpacity style={styles.writeReviewBtn}>
-          <Text style={styles.writeReviewText}>Write a review</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      </Modal>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#F7F7F7',
+  },
   page: {
     flex: 1,
     backgroundColor: '#F7F7F7',
+  },
+  scrollContent: {
+    paddingBottom: 80,
   },
   headerRow: {
     flexDirection: 'row',
@@ -425,14 +490,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#222',
   },
-  imageGallery: {
-    flexDirection: 'row',
-    marginBottom: 16,
-    paddingHorizontal: 16,
-  },
   galleryImage: {
     width: width,
-    height: 500,
+    height: 450,
     borderRadius: 12,
     marginRight: 12,
     resizeMode: 'cover',
@@ -506,7 +566,27 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     textAlign: 'left',
   },
-  cartBtn: {
+  fixedCartBtn: {
+    position: 'absolute',
+    bottom: 16,
+    left: 16,
+    right: 16,
+    borderRadius: 24,
+    paddingVertical: 14,
+    alignItems: 'center',
+    elevation: 4,
+    shadowColor: '#222',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  cartText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
+    letterSpacing: 1,
+  },
+  confirmBtn: {
     backgroundColor: '#E53935',
     borderRadius: 24,
     paddingVertical: 14,
@@ -515,7 +595,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     elevation: 2,
   },
-  cartText: {
+  confirmText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
@@ -712,5 +792,16 @@ const styles = StyleSheet.create({
     color: '#888',
     marginBottom: 24,
     textAlign: 'center',
+  },
+  imageViewerContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.9)',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    zIndex: 1,
+    padding: 10,
   },
 });

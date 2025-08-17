@@ -1,4 +1,4 @@
-const API_URL = process.env.API_URL || 'http://192.168.1.13:8087/api/v1';
+const API_URL = process.env.API_URL || 'http://192.168.1.19:8087/api/v1';
 
 export interface CreateUserPayload {
   nama: string;

@@ -1,5 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import React, { useState } from "react";
+import { useRouter } from 'expo-router';
 import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const bagItems = [
@@ -30,10 +31,11 @@ const bagItems = [
 ];
 
 export default function Bag() {
+    const router = useRouter();
     const [items, setItems] = useState(bagItems);
     const [promo, setPromo] = useState("");
     const [promoSheet, setPromoSheet] = useState(false);
-    const [menuIdx, setMenuIdx] = useState<number|null>(null);
+    const [menuIdx, setMenuIdx] = useState<number | null>(null);
 
     const updateQty = (idx: number, delta: number) => {
         setItems(items => items.map((item, i) => i === idx ? { ...item, qty: Math.max(1, item.qty + delta) } : item));
@@ -52,6 +54,9 @@ export default function Bag() {
         <View style={styles.container}>
             {/* Header */}
             <View style={styles.header}>
+                <TouchableOpacity onPress={() => router.back()} style={{ flexDirection: 'row', alignItems: 'center', marginTop: 16 }}>
+                    <Feather name="arrow-left" size={24} color="#222" />
+                </TouchableOpacity>
                 <Text style={styles.headerTitle}>My Bag</Text>
                 <TouchableOpacity>
                     <Feather name="search" size={22} color="#222" />
