@@ -10,9 +10,7 @@ export default function Index() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-
-    const isNameValid = name.length > 0;
-
+    
     const handleSignUp = async () => {
         if (!name || !email || !password) {
             Alert.alert('Error', 'Please fill all fields');
@@ -34,41 +32,37 @@ export default function Index() {
             {/* Title */}
             <Text style={styles.title}>Sign up</Text>
 
-            {/* Form */}
-            <View style={styles.form}>
-                {/* Name Input */}
-                <View style={styles.inputContainer}>
-                    <Text style={styles.inputLabel}>Name</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={name}
-                        onChangeText={setName}
-                    />
-                    {isNameValid && (
-                        <Text style={styles.checkMark}>✔️</Text>
-                    )}
-                </View>
-                {/* Email Input */}
-                <View style={styles.inputContainer}>
-                    <Text style={styles.inputLabel}>Email</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={email}
-                        onChangeText={setEmail}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                    />
-                </View>
-                {/* Password Input */}
-                <View style={styles.inputContainer}>
-                    <Text style={styles.inputLabel}>Password</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={password}
-                        onChangeText={setPassword}
-                        secureTextEntry
-                    />
-                </View>
+            {/* Name Input */}
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    value={name}
+                    placeholder='Name'
+                    onChangeText={setName}
+                />
+            </View>
+
+            {/* Email Input */}
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    placeholder='Email'
+                />
+            </View>
+
+            {/* Password Input */}
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder='Password'
+                    secureTextEntry
+                />
             </View>
 
             {/* Already have account */}
@@ -109,12 +103,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         paddingTop: 48,
     },
-    backArrow: {
-        position: 'absolute',
-        top: 48,
-        left: 16,
-        zIndex: 1,
-    },
     title: {
         fontSize: 32,
         fontWeight: 'bold',
@@ -122,35 +110,28 @@ const styles = StyleSheet.create({
         marginBottom: 32,
         color: '#222',
     },
-    form: {
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        padding: 16,
-        marginBottom: 16,
-        elevation: 2,
-    },
     inputContainer: {
-        marginBottom: 12,
+        marginBottom: 16,
         position: 'relative',
     },
     inputLabel: {
         fontSize: 12,
         color: '#aaa',
-        marginBottom: 2,
+        marginBottom: 4,
     },
     input: {
-        height: 40,
+        height: 55,
         borderWidth: 1,
-        borderColor: '#eee',
-        borderRadius: 6,
-        paddingHorizontal: 10,
+        borderColor: '#ddd',
+        borderRadius: 8,
+        paddingHorizontal: 12,
         backgroundColor: '#fff',
         fontSize: 16,
     },
     checkMark: {
         position: 'absolute',
-        right: 10,
-        top: 28,
+        right: 12,
+        top: 34,
         fontSize: 18,
         color: 'green',
     },
@@ -158,7 +139,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         alignSelf: 'flex-end',
-        marginBottom: 16,
+        marginBottom: 20,
     },
     loginText: {
         fontSize: 14,
@@ -172,9 +153,9 @@ const styles = StyleSheet.create({
     signupButton: {
         backgroundColor: '#E53935',
         borderRadius: 24,
-        paddingVertical: 12,
+        paddingVertical: 14,
         alignItems: 'center',
-        marginBottom: 24,
+        marginBottom: 28,
         elevation: 3,
         shadowColor: '#E53935',
         shadowOffset: { width: 0, height: 2 },
@@ -190,7 +171,7 @@ const styles = StyleSheet.create({
     socialText: {
         textAlign: 'center',
         color: '#888',
-        marginBottom: 12,
+        marginBottom: 16,
         fontSize: 14,
     },
     socialRow: {
@@ -201,13 +182,13 @@ const styles = StyleSheet.create({
     socialButton: {
         backgroundColor: '#fff',
         borderRadius: 12,
-        padding: 12,
+        padding: 14,
         marginHorizontal: 8,
         elevation: 2,
     },
     socialIcon: {
-        width: 32,
-        height: 32,
-        resizeMode: 'cover',
+        width: 28,
+        height: 28,
+        resizeMode: 'contain',
     },
 });

@@ -23,25 +23,26 @@ const ForgotPass = () => {
             {/* Title */}
             <Text style={styles.title}>Forgot Password</Text>
 
-            <Text style={styles.description}>Please, enter your email address. You will receive a link to create a new password via email.</Text>
+            <Text style={styles.description}>
+                Please, enter your email address. You will receive a link to create a new password via email.
+            </Text>
 
-            {/* Form */}
-            <View style={styles.form}>
-                {/* Email Input */}
-                <View style={styles.inputContainer}>
-                    <Text style={styles.inputLabel}>Email</Text>
-                    <TextInput
-                        style={[styles.input, emailTouched && !isEmailValid ? styles.inputError : null]}
-                        value={email}
-                        onChangeText={setEmail}
-                        onBlur={() => setEmailTouched(true)}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                    />
-                    {emailTouched && !isEmailValid && (
-                        <Text style={styles.errorText}>Not a valid email address. Should be your@email.com</Text>
-                    )}
-                </View>
+            {/* Email Input */}
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={[styles.input, emailTouched && !isEmailValid ? styles.inputError : null]}
+                    value={email}
+                    onChangeText={setEmail}
+                    onBlur={() => setEmailTouched(true)}
+                    keyboardType="email-address"
+                    placeholder='Email'
+                    autoCapitalize="none"
+                />
+                {emailTouched && !isEmailValid && (
+                    <Text style={styles.errorText}>
+                        Not a valid email address. Should be your@email.com
+                    </Text>
+                )}
             </View>
 
             {/* Submit Button */}
@@ -69,37 +70,30 @@ const styles = StyleSheet.create({
         fontSize: 32,
         fontWeight: 'bold',
         marginTop: 48,
-        marginBottom: 32,
+        marginBottom: 16,
         color: '#222',
     },
-    form: {
-        backgroundColor: '#fff',
-        borderRadius: 8,
-        padding: 16,
-        marginBottom: 16,
-        elevation: 2,
+    description: {
+        fontSize: 14,
+        color: '#666',
+        marginBottom: 24,
+        lineHeight: 20,
     },
     inputContainer: {
-        marginBottom: 12,
-        position: 'relative',
+        marginBottom: 16,
     },
     inputLabel: {
         fontSize: 12,
-        color: '#aaa',
-        marginBottom: 2,
-    },
-    description: {
-        fontSize: 12,
-        color: '#aaa',
-        marginBottom: 20,
+        color: '#777',
+        marginBottom: 6,
     },
     input: {
-        height: 40,
+        height: 55,
         borderWidth: 1,
-        borderColor: '#eee',
-        borderRadius: 6,
-        paddingHorizontal: 10,
-        backgroundColor: '#fff',
+        borderColor: '#ccc',
+        borderRadius: 8,
+        paddingHorizontal: 12,
+        backgroundColor: 'transparent',
         fontSize: 16,
     },
     inputError: {
@@ -108,15 +102,14 @@ const styles = StyleSheet.create({
     errorText: {
         color: 'red',
         fontSize: 12,
-        marginTop: 2,
-        marginLeft: 2,
+        marginTop: 4,
     },
     submitButton: {
         backgroundColor: '#E53935',
         borderRadius: 24,
-        paddingVertical: 12,
+        paddingVertical: 14,
         alignItems: 'center',
-        marginBottom: 24,
+        marginTop: 12,
         elevation: 3,
         shadowColor: '#E53935',
         shadowOffset: { width: 0, height: 2 },
