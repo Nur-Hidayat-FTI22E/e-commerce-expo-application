@@ -1,4 +1,4 @@
-const API_URL = process.env.API_URL || 'http://10.155.152.104:8087/api/v1';
+const API_URL = process.env.API_URL || 'http://10.122.158.104:8087/api/v1';
 
 export interface CreateUserPayload {
   nama: string;
@@ -27,6 +27,11 @@ export async function createUser(payload: CreateUserPayload): Promise<CreateUser
       },
       body: JSON.stringify(payload),
     });
+
+    const responseText = await response.text();
+    console.log("Response from server:", responseText);
+
+    // const result = JSON.parse(responseText);
     const result = await response.json();
     return result;
   } catch (error) {
